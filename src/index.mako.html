@@ -717,7 +717,7 @@ itemscope itemtype="http://schema.org/WebApplication"
 % if staging=='prod' :
           dev3d: false,
 % else:
-          dev3d: !!window.location.search.match(/(dev3d=true)/),
+          dev3d: true,
 % endif
           pegman: !!window.location.search.match(/(pegman=true)/),
           mapUrl : location.origin + '${apache_base_path}',
