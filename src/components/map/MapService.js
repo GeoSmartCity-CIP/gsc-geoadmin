@@ -384,7 +384,7 @@ goog.require('ga_urlutils_service');
         return new Cesium.UrlTemplateImageryProvider({
           minimumRetrievingLevel: window.minimumRetrievingLevel,
           url: gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue(wmsParams)),
-          rectangle: gaMapUtils.extentToRectangle(extent, 'EPSG:21781'),
+          rectangle: gaMapUtils.extentToRectangle(extent),
           proxy: proxy,
           tilingScheme: new Cesium.GeographicTilingScheme(),
           hasAlphaChannel: true,
@@ -1090,7 +1090,7 @@ goog.require('ga_urlutils_service');
               url: getTerrainTileUrl(requestedLayer, timestamp),
               availableLevels: window.terrainAvailableLevels,
               rectangle: gaMapUtils.extentToRectangle(
-                gaGlobalOptions.defaultExtent, 'EPSG:21781')
+                gaGlobalOptions.defaultExtent)
             });
             provider.bodId = bodId;
           }
@@ -1168,7 +1168,7 @@ goog.require('ga_urlutils_service');
               maximumRetrievingLevel: maxRetLod,
               // This property active client zoom for next levels.
               maximumLevel: maxLod,
-              rectangle: gaMapUtils.extentToRectangle(extent, 'EPSG:21781'),
+              rectangle: gaMapUtils.extentToRectangle(extent),
               tilingScheme: new Cesium.GeographicTilingScheme(),
               tileWidth: params.tileSize,
               tileHeight: params.tileSize,
@@ -1472,6 +1472,7 @@ goog.require('ga_urlutils_service');
         },
         // Convert an extent to Cesium
         extentToRectangle: function(e, sourceProj) {
+          sourceProj = sourceProj || ol.proj.get(gaGlobalOptions.defaultEpsg);
           e = ol.proj.transformExtent(e, sourceProj, 'EPSG:4326');
           return Cesium.Rectangle.fromDegrees(e[0], e[1], e[2], e[3]);
         },
@@ -1554,8 +1555,7 @@ goog.require('ga_urlutils_service');
           var defer = $q.defer();
           if (ol3d && ol3d.getEnabled()) {
             ol3d.getCesiumScene().camera.flyTo({
-              destination: this.extentToRectangle(extent,
-                  ol3d.getOlMap().getView().getProjection()),
+              destination: this.extentToRectangle(extent),
               complete: function() {
                 defer.resolve();
               },
