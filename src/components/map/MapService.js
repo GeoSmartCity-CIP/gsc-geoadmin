@@ -1151,7 +1151,7 @@ goog.require('ga_urlutils_service');
             };
           }
           var extent = gaMapUtils.intersectWithDefaultExtent(config3d.extent ||
-              ol.proj.get('EPSG:21781').getExtent());
+              ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent());
           if (params) {
             var minRetLod = gaMapUtils.getLodFromRes(config3d.maxResolution) ||
                 window.minimumRetrievingLevel;
@@ -1193,8 +1193,8 @@ goog.require('ga_urlutils_service');
           var olLayer;
           var timestamp = this.getLayerTimestampFromYear(bodId, gaTime.get());
           var crossOrigin = 'anonymous';
-          var extent = gaMapUtils.intersectWithDefaultExtent(
-              layer.extent || ol.proj.get('EPSG:21781').getExtent());
+          var extent = gaMapUtils.intersectWithDefaultExtent(layer.extent ||
+              ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent());
 
           // For some obscure reasons, on iOS, displaying a base 64 image
           // in a tile with an existing crossOrigin attribute generates
@@ -1213,7 +1213,7 @@ goog.require('ga_urlutils_service');
                 dimensions: {
                   'Time': timestamp
                 },
-                projection: 'EPSG:21781',
+                projection: gaGlobalOptions.defaultEpsg,
                 requestEncoding: 'REST',
                 tileGrid: gaTileGrid.get(layer.resolutions,
                     layer.minResolution),
